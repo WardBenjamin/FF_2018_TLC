@@ -9,7 +9,9 @@ import json
 # Turns out jsonify doesn't like lists.  +50 minutes.
 # Changed to json.dumps and setting content heading fixed it.
 
-# Pass through headers from TBAPIv3 + 5 minutes
+# Pass through headers instead of embedding + 15 minutes
+# This way, it can be used with premade APIs just by overriding their URL prefix.
+# For example, tba.URL_PRE = 'http://localhost:8080/' when using TBAPIv3
 # Ben w/ 5549
 
 baseURL = 'http://www.thebluealliance.com/api/v3/'
@@ -21,11 +23,11 @@ app = Flask(__name__)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-def tbaCachePath(path):
+def tba_cache_route(path):
     # print(path)
     if path not in tbaRoutes:
-        requestUrl = (baseURL + path)
-        response = requests.get(requestUrl, headers={'X-TBA-Auth-Key': request.headers['X-TBA-Auth-Key']})
+        request_url = (baseURL + path)
+        response = requests.get(request_url, headers={'X-TBA-Auth-Key': request.headers['X-TBA-Auth-Key']})
         tbaRoutes[path] = (response.json())
 
         # print("serving " + path + " from TBA")
