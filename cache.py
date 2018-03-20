@@ -30,12 +30,12 @@ def tba_cache_route(path):
         response = requests.get(request_url, headers={'X-TBA-Auth-Key': request.headers['X-TBA-Auth-Key']})
         tbaRoutes[path] = (response.json())
 
-        # print("serving " + path + " from TBA")
+        print("Serving " + path + " from TBA")
         # print(type(response.json()))
         return Response(json.dumps(response.json()), mimetype="application/json; charset=\"utf-8\"")
     else:
         # print(type(tbaRoutes[path]))
-        # print("serving " + path + " from CACHE")
+        print("Serving " + path + " from CACHE")
         return Response(json.dumps(tbaRoutes[path]), mimetype="application/json; charset=\"utf-8\"")
 
 
